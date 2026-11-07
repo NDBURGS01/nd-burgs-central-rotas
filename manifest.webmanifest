@@ -1,0 +1,31 @@
+{
+  "id": "/",
+  "name": "ND BURGS | Central de Rotas",
+  "short_name": "ND BURGS Rotas",
+  "description": "Controle de pedidos, despacho e entregas da ND BURGS",
+  "start_url": "/nd-burgs-central-rotas/",
+  "scope": "/nd-burgs-central-rotas/",
+  "display": "standalone",
+  "background_color": "#101114",
+  "theme_color": "#101114",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
