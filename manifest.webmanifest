@@ -1,31 +1,18 @@
 {
-  "id": "/",
-  "name": "ND BURGS | Central de Rotas",
-  "short_name": "ND BURGS Rotas",
-  "description": "Controle de pedidos, despacho e entregas da ND BURGS",
+  "id": "/nd-burgs-central-rotas/",
+  "name": "ND BURGS | Aplicativo",
+  "short_name": "ND BURGS",
+  "description": "Aplicativo ND BURGS para administração, motoboys e acompanhamento de pedidos.",
   "start_url": "/nd-burgs-central-rotas/",
   "scope": "/nd-burgs-central-rotas/",
   "display": "standalone",
-  "background_color": "#101114",
-  "theme_color": "#101114",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#101010",
+  "theme_color": "#151515",
   "icons": [
-    {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}
   ]
 }
