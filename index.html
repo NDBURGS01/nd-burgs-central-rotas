@@ -1,1 +1,107 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#151515">
+  <meta name="description" content="Aplicativo oficial ND BURGS: administração, motoboys e acompanhamento de pedidos.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ND BURGS">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>ND BURGS | Aplicativo</title>
+  <style>
+    :root{color-scheme:dark;--bg:#101010;--panel:#1b1b1b;--panel2:#242424;--line:#383838;--text:#fff;--muted:#b9b9b9;--red:#d92727;--red2:#a81717;--gold:#f2bd55;--green:#20865b}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -10%,#482020 0,#191313 34%,var(--bg) 72%);font:16px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);padding:env(safe-area-inset-top) 16px env(safe-area-inset-bottom)}
+    .wrap{width:min(100%,520px);margin:0 auto;padding:34px 0 28px}.brand{text-align:center;margin:10px 0 28px}.logo{width:82px;height:82px;object-fit:contain;border-radius:22px;box-shadow:0 10px 35px #0008}.eyebrow{margin:15px 0 2px;color:var(--gold);font-size:11px;font-weight:900;letter-spacing:2.2px}.brand h1{margin:0;font-size:30px;letter-spacing:.4px}.brand p{margin:6px 0;color:var(--muted);font-size:14px}.card{background:linear-gradient(145deg,#222,#171717);border:1px solid var(--line);border-radius:19px;padding:19px;margin:13px 0;box-shadow:0 12px 34px #0005}.card h2{margin:0 0 5px;font-size:18px}.card p{margin:0 0 15px;color:var(--muted);font-size:13px}.btn{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;min-height:50px;border:0;border-radius:12px;background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;font-size:14px;font-weight:900;letter-spacing:.35px;text-decoration:none;cursor:pointer}.btn.gold{background:linear-gradient(135deg,#f3c96e,#bd8428);color:#211707}.btn.secondary{background:#303030;border:1px solid #4b4b4b;color:#fff}.field{display:flex;gap:8px}.field input{min-width:0;flex:1;background:#101010;border:1px solid #494949;border-radius:10px;padding:13px;color:#fff;font:inherit}.field button{width:auto;padding:0 17px}.hint{font-size:12px;color:var(--muted);text-align:center;margin:18px 8px}.install{display:none}.status{min-height:18px;margin-top:9px;color:var(--gold);font-size:12px;text-align:center}.footer{text-align:center;color:#777;font-size:11px;margin-top:25px}.hidden{display:none!important}
+    @media(min-width:600px){.wrap{padding-top:48px}.card{padding:22px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="brand">
+      <img class="logo" src="icon-192.png" alt="ND BURGS" onerror="this.style.display='none'">
+      <div class="eyebrow">APLICATIVO OFICIAL</div>
+      <h1>ND BURGS</h1>
+      <p>Central de pedidos, entregas e acompanhamento</p>
+    </header>
 
+    <section class="card">
+      <h2>Equipe ND BURGS</h2>
+      <p>Entre na área administrativa ou na área do motoboy. O sistema identifica seu perfil pelo PIN de acesso.</p>
+      <a class="btn" id="staffLink" href="https://script.google.com/macros/s/AKfycby7BQGfh7l9gNaoPv6SlvguQp9tPJHLy__ZYZ64BNmxnN9B995R-0LIsyyiNZ0UM-3lYA/exec">ACESSAR SISTEMA DA EQUIPE</a>
+    </section>
+
+    <section class="card">
+      <h2>Acompanhar meu pedido</h2>
+      <p>Se você recebeu um link de acompanhamento, abra-o diretamente. Se recebeu apenas o código do link, cole o código abaixo.</p>
+      <form id="trackForm" class="field">
+        <input id="trackingToken" type="text" autocomplete="off" placeholder="Código de acompanhamento" aria-label="Código de acompanhamento" required>
+        <button class="btn gold" type="submit">VER</button>
+      </form>
+      <div class="status" id="message" role="status" aria-live="polite"></div>
+    </section>
+
+    <button id="installBtn" class="btn secondary install" type="button">INSTALAR ND BURGS</button>
+    <p class="hint" id="iosHint">No iPhone: abra este endereço no Safari, toque em Compartilhar e escolha “Adicionar à Tela de Início”.</p>
+    <p class="hint">A localização do motoboy depende da permissão de GPS e de o aparelho manter o compartilhamento ativo.</p>
+    <footer class="footer">ND BURGS • Aplicativo web instalável</footer>
+  </main>
+
+  <script>
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby7BQGfh7l9gNaoPv6SlvguQp9tPJHLy__ZYZ64BNmxnN9B995R-0LIsyyiNZ0UM-3lYA/exec';
+    const $ = id => document.getElementById(id);
+
+    // Links individuais enviados ao cliente mantêm o token e abrem a tela de rastreamento oficial.
+    const params = new URLSearchParams(location.search);
+    const pedido = params.get('pedido');
+    if (pedido) {
+      location.replace(APPS_SCRIPT_URL + '?pedido=' + encodeURIComponent(pedido));
+    }
+
+    $('trackForm').addEventListener('submit', event => {
+      event.preventDefault();
+      const token = $('trackingToken').value.trim();
+      if (!token) return;
+      $('message').textContent = 'Abrindo acompanhamento do pedido…';
+      location.href = APPS_SCRIPT_URL + '?pedido=' + encodeURIComponent(token);
+    });
+
+    // Mantém compatibilidade com links antigos que identificam o motoboy.
+    const legacyDriver = params.get('motoboy');
+    if (legacyDriver) {
+      $('message').textContent = 'Este é um link antigo de localização. Solicite à loja o link atualizado de acompanhamento do pedido.';
+    }
+
+    let installPrompt = null;
+    const installBtn = $('installBtn');
+    window.addEventListener('beforeinstallprompt', event => {
+      event.preventDefault();
+      installPrompt = event;
+      installBtn.style.display = 'flex';
+    });
+    installBtn.addEventListener('click', async () => {
+      if (!installPrompt) return;
+      installPrompt.prompt();
+      await installPrompt.userChoice;
+      installPrompt = null;
+      installBtn.style.display = 'none';
+    });
+    window.addEventListener('appinstalled', () => {
+      installBtn.style.display = 'none';
+      $('message').textContent = 'ND BURGS instalado com sucesso.';
+    });
+
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    if (!isIOS || isStandalone) $('iosHint').classList.add('hidden');
+
+    if ('serviceWorker' in navigator && location.protocol === 'https:') {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(err => console.warn('Service Worker não registrado:', err)));
+    }
+  </script>
+</body>
+</html>
