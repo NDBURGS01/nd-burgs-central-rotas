@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17191c">
+  <meta name="description" content="Sistema de pedidos e entregas da ND BURGS">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./assets/icon-192.png">
+  <title>ND BURGS | Central de Rotas</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0d1116;--panel:#171e26;--line:#35414d;--silver:#c6cdd4;--champ:#c9b99b;--muted:#9aa6b2}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at 50% 0,#26313d 0,transparent 55%),var(--bg);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:#f4f6f8}
+    main{width:min(100%,560px);padding:34px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,#1c252f,#11171e);box-shadow:0 24px 80px #0008;text-align:center}
+    .mark{width:68px;height:68px;margin:0 auto 18px;border-radius:18px;display:grid;place-items:center;border:1px solid #c9b99b80;background:#0d1116;color:var(--champ);font-size:25px;font-weight:900;letter-spacing:-2px}
+    .eyebrow{font-size:10px;letter-spacing:3px;font-weight:800;color:var(--champ)}h1{font-size:clamp(25px,6vw,36px);margin:9px 0 8px;letter-spacing:-1px}p{color:var(--muted);line-height:1.6;margin:0 auto 22px;max-width:430px}
+    a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:11px;background:linear-gradient(135deg,#d8c9ae,#b7a482);color:#17191c;text-decoration:none;font-weight:850}
+    #notice{margin-top:18px;font-size:12px;color:#c6cdd4}.small{margin-top:22px;font-size:11px;color:#77838f}
+  </style>
+  <script src="./config.js"></script>
+</head>
+<body>
+  <main>
+    <div class="mark">ND</div>
+    <div class="eyebrow">CENTRAL DE ROTAS</div>
+    <h1>ND BURGS</h1>
+    <p>Gestão de pedidos, distribuição de entregas e acompanhamento de motoboys.</p>
+    <a id="openApp" href="#" target="_blank" rel="noopener noreferrer">ABRIR SISTEMA</a>
+    <div id="notice" role="status" aria-live="polite"></div>
+    <div class="small">ND BURGS · Acesso oficial ao sistema</div>
+  </main>
+  <script>
+    (function(){
+      const url = (window.ND_BURGS_CONFIG && window.ND_BURGS_CONFIG.APP_URL || '').trim();
+      const button = document.getElementById('openApp');
+      const notice = document.getElementById('notice');
+      if (/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec$/.test(url)) {
+        button.href = url;
+        button.target = '_blank';
+        button.rel = 'noopener noreferrer';
+        notice.textContent = 'Conexão configurada. Clique para entrar no sistema.';
+      } else {
+        button.removeAttribute('href');
+        button.setAttribute('aria-disabled','true');
+        button.style.opacity = '.55';
+        button.style.cursor = 'not-allowed';
+        notice.textContent = 'Endereço do sistema não configurado. Confira config.js.';
+        button.addEventListener('click', function(e){e.preventDefault();});
+      }
+    })();
+    if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+      window.addEventListener('load', function(){ navigator.serviceWorker.register('./sw.js').catch(function(err){ console.warn('Service Worker não registrado:', err); }); });
+    }
+  </script>
+</body>
+</html>
